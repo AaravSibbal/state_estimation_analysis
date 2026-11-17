@@ -11,15 +11,10 @@ int main(void){
     }
 
     zoro_header_t header_buffer;
-    size_t read_amount = fread(
-        &header_buffer, 
-        1, 
-        sizeof(zoro_header_t), 
-        fptr
-    );
 
-    if(read_amount < 1){
-        printf("Either reached EOF while reading the error or some other error\n");
+    zoro_error_t err = zoro_pupolate_header(&header_buffer, fptr);
+    if(err != ZR_NO_ERROR){
+        zoro_print_error(err);
         fclose(fptr);
         return 1;
     }
