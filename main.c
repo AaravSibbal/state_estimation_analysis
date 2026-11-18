@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "zoro.H"
 #include "zoro.h"
 
 int main(void){
@@ -22,11 +23,28 @@ int main(void){
     zoro_error_t zr_err = zoro_verify_header(&header_buffer);
     if(zr_err != ZR_NO_ERROR){
         zoro_print_error(zr_err);
+        zoro_print_header(&header_buffer);
+        fclose(fptr);
+        return 1;
     }else{
         zoro_print_header(&header_buffer);
     }
 
+    // zoro_record_t re`cord_buffer;
 
+    // for(uint32_t i=0; i<header_buffer.n_samples; i++){
+    //     zr_err = zoro_populate_record(&record_buffer, fptr);
+    //     if(zr_err == ZR_NO_ERROR){
+    //         fprintf(stderr, "%d)",i);
+    //         zoro_print_record(&record_buffer);
+    //     }
+    //     else{
+    //         zoro_print_error(err);
+    //         zoro_print_record(&record_buffer);
+    //         fclose(fptr);
+    //         return 1;
+    //     }
+    // }
 
     fclose(fptr);
     return 0;

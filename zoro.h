@@ -30,7 +30,9 @@ typedef enum{
 
 zoro_error_t zoro_pupolate_header(zoro_header_t *header, FILE *file_ptr);
 zoro_error_t zoro_verify_header(zoro_header_t *header);
+zoro_error_t zoro_populate_record(zoro_record_t *record, FILE *file_ptr);
 void zoro_print_header(zoro_header_t *header);
+void zoro_print_record(zoro_record_t *record);
 void zoro_print_error(zoro_error_t err);
 
 #endif

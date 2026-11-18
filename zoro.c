@@ -15,7 +15,7 @@ static zoro_error_t zoro_read_from_file(void *buffer, FILE *file_ptr, size_t buf
 
     size_t read_amount = fread(
         buffer,
-        sizeof(uint8_t),
+        1, //verification for each byte
         buffer_size,
         file_ptr
     );
@@ -101,6 +101,54 @@ zoro_error_t zoro_verify_header(zoro_header_t *header){
     return ZR_NO_ERROR;
 }
 
+
+/**typedef struct{
+    double accel[3];
+    double gyro[3];
+    double mag[3];
+    double ref_quat[4];
+}zoro_record_t;
+*/
+zoro_error_t zoro_populate_record(zoro_record_t *record_buffer, FILE *file_ptr){
+    assert(record_buffer != NULL);
+    assert(file_ptr != NULL);
+
+    zoro_error_t err = zoro_read_from_file(
+        record_buffer->accel,
+        file_ptr, 
+        sizeof(record_buffer->accel)
+    );
+    if(err != ZR_NO_ERROR){
+        return err;
+    }
+
+    err = zoro_read_from_file(
+        record_buffer->gyro,
+        file_ptr, 
+        sizeof(record_buffer->gyro)
+    );
+    if(err != ZR_NO_ERROR){
+        return err;
+    }
+
+    err = zoro_read_from_file(
+        record_buffer->mag,
+        file_ptr, 
+        sizeof(record_buffer->mag)
+    );
+    if(err != ZR_NO_ERROR){
+        return err;
+    }
+
+    err = zoro_read_from_file(
+        record_buffer->ref_quat,
+        file_ptr, 
+        sizeof(record_buffer->ref_quat)
+    );
+
+    return ZR_NO_ERROR;
+}
+
 void zoro_print_header(zoro_header_t *header){
     fprintf(stderr, "Zoro Header:------------------\n");
     fprintf(stderr, "Magic: %s\n", header->magic);
@@ -108,6 +156,23 @@ void zoro_print_header(zoro_header_t *header){
     fprintf(stderr, "Samples: %u\n",header->n_samples);
     fprintf(stderr, "Sample Rate: %f\n", header->sample_rate_hz);
     fprintf(stderr, "------------------------------\n");
+}
+
+void zoro_print_record(zoro_record_t *record){
+    fprintf(stderr, "Record---------------------------\n");
+    fprintf(stderr, "Accel data x: %f, y: %f, z: %f\n", 
+        record->accel[0], record->accel[1], record->accel[2]
+    );
+    fprintf(stderr, "Gyro data x: %f, y: %f, z: %f\n", 
+        record->gyro[0], record->gyro[1], record->gyro[2]
+    );
+    fprintf(stderr, "Mag data x: %f, y: %f, z: %f\n", 
+        record->mag[0], record->mag[1], record->mag[2]
+    );
+    fprintf(stderr, "Reference Quaternion: [%f, %f, %f, %f]\n", 
+        record->ref_quat[0], record->ref_quat[1], record->ref_quat[2], record->ref_quat[3]
+    );
+    fprintf(stderr, "---------------------------------\n");
 }
 
 void zoro_print_error(zoro_error_t err){
