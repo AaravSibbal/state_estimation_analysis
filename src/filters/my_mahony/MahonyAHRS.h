@@ -16,8 +16,8 @@
 //----------------------------------------------------------------------------------------------------
 // Variable declaration
 
-#include "../../quaternion.h"
-#include "../../vec3.h"
+#include "../../math/quaternion.h"
+#include "../../math/vec3.h"
 
 typedef struct{
     float twoKp; // parameters set on init

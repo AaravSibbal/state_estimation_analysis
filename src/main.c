@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "zoro.H"
 #include "zoro.h"
 
 int main(void){
