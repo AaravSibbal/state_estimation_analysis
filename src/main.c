@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "zoro.h"
+#include "zoro/zoro.h"
 
 int main(void){
     printf("something\n");
 
-    FILE *fptr = fopen("data/01_undisturbed_slow_rotation_A(2).zoro", "rb");
+    FILE *fptr = fopen("../data/01_undisturbed_slow_rotation_A(2).zoro", "rb");
     if(fptr == NULL){
         printf("Could not open file\n");
         return 1;
